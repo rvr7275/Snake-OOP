@@ -1,5 +1,4 @@
 package game.utils;
-
 /**
  * This enum is used to define the movement of the snake's head. Each enum represents a different direction and allows
  * for movement in any two-dimensinoal direction.

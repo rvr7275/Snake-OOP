@@ -1,7 +1,9 @@
 package game.utils;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+
+import java.awt.Point;
+import java.awt.Image;
 
 /**
  * This is a class used to hold constants that are used throughout the game. These constants include initial game

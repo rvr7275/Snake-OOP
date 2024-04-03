@@ -3,7 +3,7 @@ package game.core;
 import game.LoggerSetup;
 import game.utils.Constants;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -26,20 +26,19 @@ public class Food {
      * Used to generate a random position for the food.
      */
     private final Random rand;
+
     /**
      * Holds a reference to the current snake object. Used to ensure food does not spawn inside the snake's body.
      */
     private final Snake snake;
 
     /**
-     * Creates {@code Food} at a {@code Point} specified location.
-     * @param initialPos The initial position of the food. Must not be {@code null} and must be within the grid's bounds.
+     * Creates the initial {@code Food} object based off the {@link Constants} file.
      * @param snake A reference to the current snake object. Must not be {@code null}.
-     * @throws IllegalArgumentException if {@code initialPos} is {@code null} or is outside the grid's range or if the
-     *                                  {@code snake} is null.
+     * @throws IllegalArgumentException if the {@code snake} is null.
      *                                  This exception is caught and logged at {@code Level.SEVERE}.
      */
-    Food(Point initialPos, Snake snake) {
+    Food(Snake snake) {
 
     }
 
@@ -63,13 +62,11 @@ public class Food {
      * Validates the values passed in to the food constructor
      *
      * @hidden
-     * @param initialPos The initial position of the food.
      * @param snake A reference to the current snake object.
-     * @throws IllegalArgumentException if {@code initialPos} is {@code null} or is outside the grid's range or if the
-     *                                  {@code snake} is null.
+     * @throws IllegalArgumentException if the {@code snake} is null.
      *                                  This exception is caught and logged at {@code Level.SEVERE}.
      */
-    private void validateConstructor(Point initialPos, Snake snake) {
+    private void validateConstructor(Snake snake) {
 
     }
 }

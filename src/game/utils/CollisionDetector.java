@@ -5,7 +5,7 @@ import game.LoggerSetup;
 import game.core.Food;
 import game.core.Snake;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.logging.Logger;
 
 /**

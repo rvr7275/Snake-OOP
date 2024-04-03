@@ -1,6 +1,6 @@
 /**
  * Contains the main game elements and logic required for the game loop by managing the food, snake, and game state
- * and has the main instances of the major components of each gameplay loop.
+ * and has the main instances of the major components of each gameplay loop. Does not manage any gui creation.
  * <p>
  *     Each class in this package relies on an external class to setup logging ensuring that all loggers are uniform.
  * </p>
