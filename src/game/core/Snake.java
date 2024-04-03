@@ -36,11 +36,13 @@ public class Snake {
      * Used to determine which direction the snake will move on the next frame.
      */
     private Direction nextDirection;
+
     /**
      * Used to buffer an input for the next frame. Allows for two inputs to be used on the current frame. Is only set
      * if the direction is attempted to be changed while {@code nextDirection} is not {@code null}.
      */
     private Direction bufferDirection;
+
     /**
      * A {@code Point} used to represent the tail from the previous frame. This is added to the end of the snake when it
      * grows and when the snake moves backwards a frame when the game ends.

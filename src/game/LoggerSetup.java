@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.*;
 
+
 /**
  * Used to uniformly configure a logger that can be used by all classes.
  */

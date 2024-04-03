@@ -17,6 +17,7 @@ public class GameEngine {
      * @hidden
      */
     private static final Logger LOGGER = LoggerSetup.getLogger(GameEngine.class.getName());
+
     /** Specifies whether the game is currently running. */
     private boolean isRunning;
 
@@ -41,6 +42,7 @@ public class GameEngine {
      * The current {@code score} of the player, as determined by the number of fruits eaten.
      */
     private int score;
+
     /**
      * An instance of the game loop {@code timer}.
      */

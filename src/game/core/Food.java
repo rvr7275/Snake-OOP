@@ -26,6 +26,7 @@ public class Food {
      * Used to generate a random position for the food.
      */
     private final Random rand;
+
     /**
      * Holds a reference to the current snake object. Used to ensure food does not spawn inside the snake's body.
      */

@@ -1,6 +1,6 @@
 /**
  * This package encompasses all the necessary components required for the snake game to function.
- * This package is organized into 3 subpackages that each serve their own purpose in the game's functions
+ * This package is organized into 3 subpackages that each serve their own purpose in the game's functions:
  * <p>
  * - {@code game.core} contains the game elements and the game logic
  * </p><p>
