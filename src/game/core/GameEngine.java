@@ -53,7 +53,17 @@ public class GameEngine {
      * @param timer an instance of the game loop timer so we can start and stop the game.
      */
     public GameEngine(Timer timer) {
+        this.timer = timer;
+        this.isRunning = false;
+        this.score = 0;
 
+        // Intialize the snake and food objects //
+        this.snake = new Snake();
+        this.food = new Food(Constants.FOOD_INITIAL_POSITION);
+        this.cd = new CollisionDetector();
+
+        // Initialize the snake's starting position //
+        this.snake.getSnake().add(Constants.SNAKE_INITIAL_POSITION);
     }
 
     /**
