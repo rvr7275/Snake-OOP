@@ -1,11 +1,10 @@
 package game.utils;
 
-
 import game.LoggerSetup;
 import game.core.Food;
 import game.core.Snake;
-
 import java.awt.Point;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -14,7 +13,6 @@ import java.util.logging.Logger;
 public class CollisionDetector {
     /**
      * Logger for logging information.
-     * @hidden
      */
     private static final Logger LOGGER = LoggerSetup.getLogger(CollisionDetector.class.getName());
 
@@ -30,21 +28,27 @@ public class CollisionDetector {
 
     /**
      * Initializes a new {@code CollisionDetector} object storing instances of the current game loop's
-     * snake and game objects.
+     * snake and food objects.
      * @param snake current snake object
      * @param food current food object
      * @throws IllegalArgumentException if {@code snake} or {@code food} is null.
      */
     public CollisionDetector(Snake snake, Food food) {
-
+        if (snake == null || food == null) {
+            throw new IllegalArgumentException("Snake and food can't be null.");
+        }
+        this.snake = snake;
+        this.food = food;
     }
+
     /**
      * Checks if the {@code snake} has collided with the wall within the current frame. If the snake's head has exited
-     * the bounds of the grid than it has collided with the wall.
+     * the bounds of the grid then it has collided with the wall.
      * @return true if the {@code snake} has collided with the wall, false otherwise.
      */
     public boolean checkWallCollision() {
-
+        Point head = snake.getSnake().get(0);
+        return head.x < 0 || head.x >= Constants.WIDTH || head.y < 0 || head.y >= Constants.HEIGHT;
     }
 
     /**
@@ -53,7 +57,8 @@ public class CollisionDetector {
      * @return true if the {@code snake} has collided with the {@code food}, false otherwise.
      */
     public boolean checkFoodCollision() {
-
+        Point head = snake.getSnake().get(0);
+        return head.equals(food.getPosition()); // Assuming Food has a getPosition method returning a Point
     }
 
     /**
@@ -62,6 +67,13 @@ public class CollisionDetector {
      * @return true if {@code snake} has collided with itself, false otherwise.
      */
     public boolean checkSelfCollision() {
-
+        List<Point> body = snake.getSnake();
+        Point head = body.get(0);
+        for (int i = 1; i < body.size(); i++) {
+            if (head.equals(body.get(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
