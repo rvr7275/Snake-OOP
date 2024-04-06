@@ -35,7 +35,7 @@ public class CollisionDetector {
      */
     public CollisionDetector(Snake snake, Food food) {
         if (snake == null || food == null) {
-            throw new IllegalArgumentException("Snake and food cannot be null.");
+            throw new IllegalArgumentException("Snake and food can't' be null.");
         }
         this.snake = snake;
         this.food = food;
