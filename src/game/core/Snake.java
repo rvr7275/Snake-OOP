@@ -5,7 +5,7 @@ import game.utils.Constants;
 import game.utils.Direction;
 
 import java.awt.Point;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -25,7 +25,7 @@ public class Snake {
     /**
      * A List representing the points on the grid the snake's body occupies.
      */
-    private final List<Point> body;
+    private final LinkedList<Point> body;
 
     /**
      * Used to determine which direction the snake is currently moving.
@@ -54,32 +54,79 @@ public class Snake {
      * a list of points to represent the {@code body} and setting its starting direction.
      */
     Snake() {
-
+        this.direction = Direction.UP;   //Assuming the snake should start upwards
+        this.body = new LinkedList<Point>();
+        for(int i = 0; i < Constants.SNAKE_INITIAL_LENGTH; i++)
+            body.add(new Point(Constants.SNAKE_INITIAL_POSITION.x, Constants.SNAKE_INITIAL_POSITION.y - i));
     }
 
     /**
-     * Moves the snack up one space based on the new direction of the snake. This method is called once a frame so the
+     * Moves the snake up one space based on the new direction of the snake. This method is called once a frame so the
      * direction must be updated as well.
      */
     public void move() {
+        oldTail = body.removeLast();
+        Point newHead = new Point(body.getFirst());
 
+        updateDirection();
+
+        switch (direction) {
+            case UP:
+                newHead.y += 1;
+                break;
+            case DOWN:
+                newHead.y -= 1;
+                break;
+            case LEFT:
+                newHead.x -= 1;
+                break;
+            case RIGHT:
+                newHead.x += 1;
+                break;
+            default:
+                break;
+        }
+        body.addFirst(new Point(newHead));
     }
 
     /**
      * Increase the length of the snake by adding the tail from the previous frame to the {@code body}.
      */
     public void grow() {
-
+        body.addLast(oldTail);
     }
 
     /**
      * Changes the {@code nextDirection} of the snake if it is not attempting to go in the opposite direction, such as
      * right to left. If the {@code nextDirection} already has a value then buffer the input instead by setting
-     * {@code bufferDirection} to the {@code newDirection}.
-     * @param newDirection direction to attempt to change to.
+     * {@code bufferDirection} to the {@code desiredDirection}.
+     * @param desiredDirection direction to attempt to change to.
      */
-    public void changeDirection(Direction newDirection) {
+    public void changeDirection(Direction desiredDirection) {
+        if(nextDirection == null) {
+            nextDirection = (desiredDirection == opposite(direction)) ? null : desiredDirection;
+        }
+        else {
+            bufferDirection = (desiredDirection == opposite(nextDirection)) ? null : desiredDirection;
+        }
+    }
 
+    /**
+     * @returns the opposite direction to the given direction.
+     * @param direction the given direction.
+     */
+    private Direction opposite(Direction direction) {
+        switch (direction) {
+            case UP:
+                return Direction.DOWN;
+            case DOWN:
+                return Direction.UP;
+            case LEFT:
+                return Direction.RIGHT;
+            case RIGHT:
+                return Direction.LEFT;
+        }
+        return null;
     }
 
     /**
@@ -88,7 +135,14 @@ public class Snake {
      * Resets {@code bufferDirection} to {@code null}.
      */
     public void updateDirection() {
-
+        if(nextDirection != null) {
+            direction = nextDirection;
+            nextDirection = null;
+        }
+        if(bufferDirection != null){
+            nextDirection = bufferDirection;
+            bufferDirection = null;
+        }
     }
 
     /**
@@ -96,7 +150,8 @@ public class Snake {
      * And we don't want to show the snake phased inside the wall on the final frame.
      */
     public void moveBackwards() {
-
+        body.removeFirst();
+        body.addLast(oldTail);
     }
 
     /**
