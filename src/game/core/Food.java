@@ -4,7 +4,9 @@ import game.LoggerSetup;
 import game.utils.Constants;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -39,7 +41,10 @@ public class Food {
      *                                  This exception is caught and logged at {@code Level.SEVERE}.
      */
     Food(Snake snake) {
-
+        validateConstructor(snake);
+        this.snake = snake;
+        this.rand = new Random();
+        this.position = Constants.FOOD_INITIAL_POSITION;
     }
 
     /**
@@ -47,6 +52,17 @@ public class Food {
      * occupied by the snake.
      */
     public void spawn() {
+        ArrayList<Point> avaliableSpaces = new ArrayList<Point>();
+        for(int i = 0; i < Constants.NUM_COLS; i++)
+            for(int j = 0; j < Constants.NUM_ROWS; j++)
+                avaliableSpaces.add(new Point(i,j));
+
+        for(Point node:snake.getSnake())
+            avaliableSpaces.remove(node);
+
+        if(avaliableSpaces.size() > 0) {
+            position = avaliableSpaces.get(rand.nextInt(avaliableSpaces.size()));
+        }
 
     }
 
@@ -67,6 +83,9 @@ public class Food {
      *                                  This exception is caught and logged at {@code Level.SEVERE}.
      */
     private void validateConstructor(Snake snake) {
-
+        if(snake == null) {
+            LOGGER.log(Level.SEVERE, "null parameter for snake");
+            throw new IllegalArgumentException();
+        }
     }
 }
