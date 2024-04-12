@@ -7,70 +7,59 @@ import java.awt.Point;
 import java.util.List;
 import java.util.logging.Logger;
 
-/**
- * A helper class used to check if the {@code snake} has collided with anything within the current frame.
- */
+// Class that detects collisions with walls, food, or the snake itself //
+
 public class CollisionDetector {
-    /**
-     * Logger for logging information.
-     */
     private static final Logger LOGGER = LoggerSetup.getLogger(CollisionDetector.class.getName());
-
-    /**
-     * A reference to the {@code Snake} object of the current game loop.
-     */
     private final Snake snake;
-
-    /**
-     * A reference to the {@code Food} object of the current game loop.
-     */
     private final Food food;
 
     /**
-     * Initializes a new {@code CollisionDetector} object storing instances of the current game loop's
-     * snake and food objects.
-     * @param snake current snake object
-     * @param food current food object
-     * @throws IllegalArgumentException if {@code snake} or {@code food} is null.
+     * Constructor to check for any collisions in the game's state
+     * @throws IllegalArgumentException for if snake or food is null
      */
+
     public CollisionDetector(Snake snake, Food food) {
         if (snake == null || food == null) {
-            throw new IllegalArgumentException("Snake and food can't be null.");
+            throw new IllegalArgumentException();
         }
         this.snake = snake;
         this.food = food;
     }
 
     /**
-     * Checks if the {@code snake} has collided with the wall within the current frame. If the snake's head has exited
-     * the bounds of the grid then it has collided with the wall.
-     * @return true if the {@code snake} has collided with the wall, false otherwise.
+     * Checks for collision with wall
      */
-    public boolean checkWallCollision() {
+    public boolean wallCollision() {
         Point head = snake.getSnake().get(0);
-        return head.x < 0 || head.x >= Constants.WIDTH || head.y < 0 || head.y >= Constants.HEIGHT;
+        if (head.x < 0 || head.x >= Constants.WIDTH || head.y < 0 || head.y >= Constants.HEIGHT) {
+            LOGGER.fine("Collision with wall.");
+            return true;
+        }
+        return false;
     }
 
     /**
-     * Checks if the {@code snake} has collided with the {@code food} object within the current frame. If the head and
-     * food share the same position then they have collided.
-     * @return true if the {@code snake} has collided with the {@code food}, false otherwise.
+     * Checks for collision with food
      */
-    public boolean checkFoodCollision() {
+    public boolean foodCollision() {
         Point head = snake.getSnake().get(0);
-        return head.equals(food.getPosition()); // Assuming Food has a getPosition method returning a Point
+        if (head.equals(food.getPosition())) {
+            LOGGER.fine("Collision with food.");
+            return true;
+        }
+        return false;
     }
 
     /**
-     * Checks if the {@code snake} has collided with itself within the current frame. If the head shares a position
-     * with any other part of its body other than the head, then it has collided with itself.
-     * @return true if {@code snake} has collided with itself, false otherwise.
+     * Checks if the snake collides with its body
      */
-    public boolean checkSelfCollision() {
-        List<Point> body = snake.getSnake();
-        Point head = body.get(0);
-        for (int i = 1; i < body.size(); i++) {
-            if (head.equals(body.get(i))) {
+    public boolean bodyCollision() {
+        List<Point> snakeBody = snake.getSnake();
+        Point head = snakeBody.get(0);
+        for (int i = 1; i < snakeBody.size(); i++) {
+            if (head.equals(snakeBody.get(i))) {
+                LOGGER.fine("Collision onto snake body.");
                 return true;
             }
         }
