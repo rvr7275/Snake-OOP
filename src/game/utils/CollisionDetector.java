@@ -16,8 +16,6 @@ public class CollisionDetector {
 
     /**
      * Constructor to check for any collisions in the game's state
-     * @param snake
-     * @param food
      * @throws IllegalArgumentException for if snake or food is null
      */
 
