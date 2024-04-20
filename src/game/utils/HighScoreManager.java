@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -39,7 +40,12 @@ public class HighScoreManager {
      * @throws IllegalArgumentException if the file found at the path is not of type .csv
      */
     public HighScoreManager(String path) {
-
+        if(!path.endsWith(".csv")) {
+            throw new IllegalArgumentException("The file must be of type '.csv'");
+        }
+        this.path = path;
+        highscores = new ArrayList<>();
+        loadHighScores();
     }
 
     /**
@@ -48,7 +54,22 @@ public class HighScoreManager {
      * stored as a HighScore record within the list.
      */
     private void loadHighScores() {
-
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while((line = br.readLine()) != null) {
+                try {
+                    String tokens[] = line.split(",");
+                    int score = Integer.parseInt(tokens[0]);
+                    String name = tokens[1];
+                    LocalDate date = LocalDate.parse(tokens[2]);
+                    highscores.add(new HighScore(score, name, date));
+                } catch (DateTimeParseException | NumberFormatException e) {
+                    LOGGER.log(Level.WARNING, "Skipping invalid highscore entry: " + line, e);
+                }
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to load file from path: " + path, e);
+        }
     }
 
     /**
@@ -60,7 +81,34 @@ public class HighScoreManager {
      * @throws IllegalArgumentException if {@code score} is negative or if {@code name} is {@code null} or blank
      */
     public void saveHighScore(int score, String name) {
+        HighScore newScore = new HighScore(score, name, LocalDate.now());
+        int l = 0;
+        int r = highscores.size() - 1;
+        int m;
 
+        while(l <= r) {
+            m = (l + r) / 2;
+            HighScore cur = highscores.get(m);
+
+            if(cur.score < score) {
+                r = m - 1;
+            } else if (cur.score > score) {
+                l = m + 1;
+            } else {
+                l = m + 1;
+                break;
+            }
+        }
+
+        highscores.add(l, newScore);
+
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+            for(HighScore hs : highscores) {
+                bw.write(String.format("%d,%s,%s\n", hs.score(), hs.name(), hs.date()));
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to save highscores at file: " + path, e);
+        }
     }
 
     /**
