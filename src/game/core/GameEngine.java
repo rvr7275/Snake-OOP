@@ -27,12 +27,16 @@ public class GameEngine {
         setGameComponents();
     }
 
+    /**
+     * Initializes game components
+     */
     private void setGameComponents() {
-        isRunning = false;
+        isRunning = true;
         score = 0;
         snake = new Snake();
         food = new Food(snake);
         cd = new CollisionDetector(snake, food);
+        timer.start();
     }
 
     /**
@@ -56,6 +60,9 @@ public class GameEngine {
         handleCollisions();
     }
 
+    /**
+     * Checks for collisions and does the necessary actions
+     */
     private void handleCollisions() {
         if (cd.wallCollision() || cd.bodyCollision()) {
             endGame();
@@ -71,6 +78,7 @@ public class GameEngine {
      */
     public void endGame() {
         if (isRunning) {
+            snake.moveBackwards();
             isRunning = false;
             timer.stop();
             LOGGER.info("Score: " + score);
@@ -83,29 +91,43 @@ public class GameEngine {
     public void togglePause() {
         if (timer.isRunning()) {
             timer.stop();
+            LOGGER.info("Game Paused");
         } else {
             timer.start();
+            LOGGER.info("Game Resumed");
         }
-        isRunning = !isRunning;
-        LOGGER.info("Game " + (isRunning ? "Resume" : "Paused"));
-    }
 
-    public boolean hasEnded() 
+    }
+    /**
+     * Returns {@code true} if the game has ended.
+     * @return true if the game has ended, false otherwise.
+     */
+    public boolean hasEnded()
     {
         return !isRunning;
     }
 
-    public Snake getSnake() 
+    /**
+     * Gets the instance of {@code snake} for the current game loop.
+     * @return The current {@code snake} instance.
+     */
+    public Snake getSnake()
     {
         return snake;
     }
-
-    public Food getFood() 
+    /**
+     * Gets the instance of {@code food} for the current game loop.
+     * @return The current {@code food} instance.
+     */
+    public Food getFood()
     {
         return food;
     }
-
-    public int getScore() 
+    /**
+     * Gets the {@code score} of the current game loop.
+     * @return The current score.
+     */
+    public int getScore()
     {
         return score;
     }
