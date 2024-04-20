@@ -54,10 +54,10 @@ public class Snake {
      * a list of points to represent the {@code body} and setting its starting direction.
      */
     Snake() {
-        this.direction = Direction.UP;   //Assuming the snake should start upwards
-        this.body = new LinkedList<Point>();
+        this.direction = Direction.RIGHT;
+        this.body = new LinkedList<>();
         for(int i = 0; i < Constants.SNAKE_INITIAL_LENGTH; i++)
-            body.add(new Point(Constants.SNAKE_INITIAL_POSITION.x, Constants.SNAKE_INITIAL_POSITION.y - i));
+            body.add(new Point(Constants.SNAKE_INITIAL_POSITION.x - i, Constants.SNAKE_INITIAL_POSITION.y));
     }
 
     /**
@@ -72,10 +72,10 @@ public class Snake {
 
         switch (direction) {
             case UP:
-                newHead.y += 1;
+                newHead.y -= 1;
                 break;
             case DOWN:
-                newHead.y -= 1;
+                newHead.y += 1;
                 break;
             case LEFT:
                 newHead.x -= 1;
@@ -104,15 +104,15 @@ public class Snake {
      */
     public void changeDirection(Direction desiredDirection) {
         if(nextDirection == null) {
-            nextDirection = (desiredDirection == opposite(direction)) ? null : desiredDirection;
+            nextDirection = (desiredDirection == opposite(direction)) ? nextDirection : desiredDirection;
         }
         else {
-            bufferDirection = (desiredDirection == opposite(nextDirection)) ? null : desiredDirection;
+            bufferDirection = (desiredDirection == opposite(nextDirection)) ? bufferDirection : desiredDirection;
         }
     }
 
     /**
-     * @returns the opposite direction to the given direction.
+     * @return the opposite direction to the given direction.
      * @param direction the given direction.
      */
     private Direction opposite(Direction direction) {

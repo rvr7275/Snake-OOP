@@ -52,16 +52,16 @@ public class Food {
      * occupied by the snake.
      */
     public void spawn() {
-        ArrayList<Point> avaliableSpaces = new ArrayList<Point>();
+        ArrayList<Point> availableSpaces = new ArrayList<>();
         for(int i = 0; i < Constants.NUM_COLS; i++)
             for(int j = 0; j < Constants.NUM_ROWS; j++)
-                avaliableSpaces.add(new Point(i,j));
+                availableSpaces.add(new Point(i,j));
 
         for(Point node:snake.getSnake())
-            avaliableSpaces.remove(node);
+            availableSpaces.remove(node);
 
-        if(avaliableSpaces.size() > 0) {
-            position = avaliableSpaces.get(rand.nextInt(avaliableSpaces.size()));
+        if(availableSpaces.size() > 0) {
+            position = availableSpaces.get(rand.nextInt(availableSpaces.size()));
         }
 
     }

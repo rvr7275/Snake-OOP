@@ -32,7 +32,7 @@ public class CollisionDetector {
      */
     public boolean wallCollision() {
         Point head = snake.getSnake().get(0);
-        if (head.x < 0 || head.x >= Constants.WIDTH || head.y < 0 || head.y >= Constants.HEIGHT) {
+        if (head.x < 0 || head.x >= Constants.NUM_COLS || head.y < 0 || head.y >= Constants.NUM_ROWS) {
             LOGGER.fine("Collision with wall.");
             return true;
         }
