@@ -49,7 +49,6 @@ public class StartMenuPanel extends JPanel {
     StartMenuPanel(Image unscaledIcon, HighScoreManager hsm, GameEngine gameEngine) {
         this.hsm = hsm;
         this.gameEngine = gameEngine;
-        setLayout(new BorderLayout());
         icon = unscaledIcon.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         initializeFrame();
         initializePanel();
@@ -85,6 +84,14 @@ public class StartMenuPanel extends JPanel {
      * Sets initial settings for the current panel and adds {@link RoundedButton}s for options.
      */
     private void initializePanel() {
+        CircularButton helpButton = new CircularButton("?");
+        helpButton.setBackground(new Color(200, 200, 255));
+        helpButton.addActionListener(e -> showHelpDialog());
+        helpButton.setBounds(10, 10, 50, 50);
+
+        add(helpButton);
+        setLayout(new BorderLayout());
+
         RoundedButton restartButton = new RoundedButton("Play",
                 new ImageIcon("src/resources/images/play.png"),
                 (e -> playGame()));
@@ -103,6 +110,19 @@ public class StartMenuPanel extends JPanel {
         buttonPanel.add(panel);
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
+
+    private void showHelpDialog() {
+        JOptionPane.showMessageDialog(this,
+                "The goal of snake is to feed your hungry snake as many apples as you can. Apples will spawn on\n" +
+                        " the screen and you must skillfully collect as many as you can without running head first into\n" +
+                        "yourself or the wall. For each apple you collect, your score increases by one. Compete for the\n" +
+                        "best score, every score can be saved to our in game leaderboard!!\n" +
+                        "\nControls:\n" +
+                        "→ Right, ↑ Up, → Left, ↓ Down\n" +
+                        "R Restart, P Pause", "How to play",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
 
     /**
      * Logic for leaderboard button. Creates a new leaderboard.
@@ -145,5 +165,27 @@ public class StartMenuPanel extends JPanel {
      */
     public void refresh() {
         new StartMenuPanel(icon, hsm, gameEngine);
+    }
+}
+
+class CircularButton extends JButton {
+    public CircularButton(String label) {
+        super(label);
+        setOpaque(false);
+        setContentAreaFilled(false);
+        setBorderPainted(false);
+        setFocusPainted(false);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        g.setColor(getBackground());
+        g.fillOval(0, 0, getSize().width-1, getSize().height-1);
+        super.paintComponent(g);
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(30, 30); // Set the size of the button
     }
 }
